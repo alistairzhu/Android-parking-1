@@ -8,11 +8,13 @@ import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.request.Transaction;
 import org.web3j.protocol.core.methods.response.EthAccounts;
 import org.web3j.protocol.core.methods.response.EthGetBalance;
+import org.web3j.protocol.core.methods.response.EthGetCode;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
 import org.web3j.protocol.core.methods.response.EthGetTransactionReceipt;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
@@ -105,4 +107,11 @@ public class Web3jUtils {
         }
     }
 
+    public static String getBinaryOfContract(String address) throws IOException {
+
+        EthGetCode ethGetCode = web3j.ethGetCode(address,DefaultBlockParameterName.LATEST).send();
+        String s=ethGetCode.getCode();
+        System.out.println(s);
+        return s;
+    }
 }

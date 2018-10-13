@@ -74,6 +74,7 @@ public class LoginActivity extends AppCompatActivity{
 
         final Intent intent_register = new Intent(getApplicationContext(), RegisterActivity.class);
         startActivity(intent_register);
+        Log.i("MyApp","--+++-------------------------onRegister(View view)----------------------------------" + clientUrl );
 
     }
 
@@ -81,6 +82,7 @@ public class LoginActivity extends AppCompatActivity{
     public void Start_Connect() {
         clientUrl = argsToUrl();
         web3j = Web3jFactory.build(new HttpService(clientUrl));
+        Log.i("MyApp","--+++-------------------------Start_Connect()----------------------------------" + clientUrl );
     }
 
     //connection port and ip

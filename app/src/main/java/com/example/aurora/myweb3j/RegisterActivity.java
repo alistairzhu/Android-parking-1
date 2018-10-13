@@ -29,13 +29,19 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.concurrent.ExecutionException;
+
+import static com.example.aurora.myweb3j.util.Web3jUtils.getBinaryOfContract;
+
 //user registration
 public class RegisterActivity extends AppCompatActivity {
     static final String ERROR = "Error";
     ManageOrder contract = null;
+    ManageOrder manageOrder = null;
     static ECKeyPair KEY_PAIR =null;
     public static Credentials CREDENTIALS =null;
     public static String ADDRESS = null;
+
+    private static final String TAG = "RegisterActivity--";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
         BigInteger privateKey = keyPair[0].getPrivateKey();
         Alice.PRIVATE_KEY = Numeric.toHexStringWithPrefix(privateKey);
         saveFile(Alice.PUBLIC_KEY, "public_key.pem");
-        Log.d("Public",Alice.PUBLIC_KEY);
+        Log.i("Public",Alice.PUBLIC_KEY);
         saveFile(Alice.PRIVATE_KEY, "private_key.pem");
         KEY_PAIR = new ECKeyPair(Numeric.toBigInt(Alice.PRIVATE_KEY), Numeric.toBigInt(Alice.PUBLIC_KEY));
 
@@ -74,52 +80,58 @@ public class RegisterActivity extends AppCompatActivity {
 
     //when clicking "register" button
     public void onRegister_ok(View view) {
-        System.out.println("--+++---" );
+        Log.i(TAG,"--+++----------------------------onRegister_ok------------------------------------" );
         //get user information
         EditText edit_username = (EditText) findViewById(R.id.edit_username);
         String username = edit_username.getText().toString();
         EditText edit_userphone = (EditText) findViewById(R.id.edit_userphone);
         String userphone = edit_userphone.getText().toString();
-
+        Log.i(TAG,"--+++---------------------------------------------------username----------"  + username );
 
         final Intent intent_main2 = new Intent(getApplicationContext(), MainActivity.class);
         final Intent intent_register = new Intent(getApplicationContext(), RegisterActivity.class);
 
         //check if the key pair exists in the divice
-       // if((fileExistance("public_key.pem"))&&(fileExistance("private_key.pem"))){
-            if(true){
+       if((fileExistance("public_key.pem"))&&(fileExistance("private_key.pem"))){
+        //    if(false){
 
             //transfer money from the wallet to the user account
             BigInteger amountWei = new BigInteger("500000000000000002");
             try {
-                String txHash = MainActivity.transferWei(Web3jUtils.getCoinbase(), "0x31c79c8dfe7422ec68dac191310f08754ad69260", amountWei);
-                System.out.println("-------" );
+                String txHash = MainActivity.transferWei(Web3jUtils.getCoinbase(), "0xc5478aa6d2f66f4a1fbffaa3a012a108824fee24", amountWei);
+                Log.i(TAG,"--+++---------------------------------------------------userphon----------" + userphone );
             } catch (Exception e) {
                 e.printStackTrace();
             }
             try {
-                ManageOrder manageOrder = loadContract();
-                System.out.println("----111---" );
+                manageOrder = loadContract();
+
+                Log.i(TAG,"----111-----------------------------------------------" );
             } catch (Exception e) {
+                Log.i(TAG,"----catch (Exception e)-----------------------------------------------" );
                 e.printStackTrace();
             }
 
             //send the register request to the contract
             TransactionReceipt result = null;
             try {
-                result = contract.newBuyer(new Utf8String(username),new Utf8String(userphone)).get();
-                System.out.println("----222---" );
+
+                Log.i(TAG,"----1.55-----------------------------------------------" );
+//                result = contract.newBuyer(new Utf8String(username),new Utf8String(userphone)).get();
+                result = manageOrder.newBuyer(new Utf8String(username),new Utf8String(userphone)).get();
+                Log.i(TAG,"----222---------------------------------------------------------" );
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
-            System.out.println("----Balance from the address: " +result.getTransactionHash());
+                Log.i(TAG,"--------------------------------------------------------------------------------Balance from the address: " +result.getTransactionHash());
 
             startActivity(intent_main2);
         }else{
-            startActivity(intent_register);
+            //startActivity(intent_register);
+                startActivity(intent_main2);
         }
 
 
@@ -143,13 +155,15 @@ public class RegisterActivity extends AppCompatActivity {
 
     //load the contract using user credential
     private ManageOrder loadContract() throws Exception {
-        System.out.println("// Deploy contract");
+        System.out.println("// Deploy contract------------------------");
 
         contract = ManageOrder
                 .load(Web3jConstants.CONTRACT_ADDRESS, LoginActivity.web3j, CREDENTIALS, Web3jConstants.GAS_PRICE, Web3jConstants.GAS_LIMIT_ETHER_TX.multiply(BigInteger.valueOf(2)));
 
         String contractAddress = contract.getContractAddress();
-        System.out.println("Contract address: " + contractAddress);
+        System.out.println("Contract address: ------------------------------" + contractAddress);
+
+       // System.out.println("Binary-----------------------" + getBinaryOfContract(contractAddress));
         return contract;
     }
 
@@ -158,6 +172,9 @@ public class RegisterActivity extends AppCompatActivity {
         File file = getBaseContext().getFileStreamPath(fname);
         return file.exists();
     }
+
+
+
 }
 
 

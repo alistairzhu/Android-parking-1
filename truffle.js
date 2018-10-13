@@ -18,8 +18,8 @@ module.exports = {
  
   networks: {
     development: {
-     host: "127.0.0.1",
-     // host: "10.0.2.2",
+     //host: "127.0.0.1",
+      host: "10.0.2.2",
 
 	// host: "10.0.75.1",
 	//  host: "192.168.0.129",
