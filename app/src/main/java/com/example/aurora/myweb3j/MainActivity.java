@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
         //send some ether to the account
         BigInteger amountWei = new BigInteger("500000000000000000");
         try {
-            String txHash = MainActivity.transferWei(Web3jUtils.getCoinbase(), "0xe3a0fa73e04c432611fed9a4648e6369d679b024", amountWei);
+            String txHash = MainActivity.transferWei(Web3jUtils.getCoinbase(), "0x72fb6796118be27819bd1e19ac5aae2e9570d915", amountWei);
         } catch (Exception e) {
             e.printStackTrace();
         }

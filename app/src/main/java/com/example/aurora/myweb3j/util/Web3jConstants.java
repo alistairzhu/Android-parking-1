@@ -22,6 +22,6 @@ public class Web3jConstants {
     public static final int CONFIRMATION_ATTEMPTS = 40;
     public static final int SLEEP_DURATION = 1000;
     //public static final String CONTRACT_ADDRESS = "0xd6a40d6f7406412c24b10d02192233f5c13f986c";
-    public static final String CONTRACT_ADDRESS = "0xe28497868f2aecf58b639bf8d80b672855126310";
+    public static final String CONTRACT_ADDRESS = "0xf6d07ff9871e79fb826006d0c4d55d95c28f5c6a";
 
 }

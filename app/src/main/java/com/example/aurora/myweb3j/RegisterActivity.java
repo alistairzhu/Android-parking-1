@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.example.aurora.myweb3j.contract.ManageOrder;
+import com.example.aurora.myweb3j.contract.greeter;
 import com.example.aurora.myweb3j.util.Alice;
 import com.example.aurora.myweb3j.util.Web3jConstants;
 import com.example.aurora.myweb3j.util.Web3jUtils;
@@ -37,6 +38,9 @@ public class RegisterActivity extends AppCompatActivity {
     static final String ERROR = "Error";
     ManageOrder contract = null;
     ManageOrder manageOrder = null;
+
+    greeter myGreeter = null;
+
     static ECKeyPair KEY_PAIR =null;
     public static Credentials CREDENTIALS =null;
     public static String ADDRESS = null;
@@ -76,6 +80,8 @@ public class RegisterActivity extends AppCompatActivity {
         CREDENTIALS = Credentials.create(KEY_PAIR);
         ADDRESS = CREDENTIALS.getAddress();
 
+        Log.i(TAG,"--+++---------------------------Credentials.-ADDRESS =----------" + ADDRESS.toString() );
+
     }
 
     //when clicking "register" button
@@ -98,15 +104,20 @@ public class RegisterActivity extends AppCompatActivity {
             //transfer money from the wallet to the user account
             BigInteger amountWei = new BigInteger("500000000000000002");
             try {
-                String txHash = MainActivity.transferWei(Web3jUtils.getCoinbase(), "0xc5478aa6d2f66f4a1fbffaa3a012a108824fee24", amountWei);
+                String txHash = MainActivity.transferWei(Web3jUtils.getCoinbase(), "0x72fb6796118be27819bd1e19ac5aae2e9570d915", amountWei);
+
+
                 Log.i(TAG,"--+++---------------------------------------------------userphon----------" + userphone );
             } catch (Exception e) {
                 e.printStackTrace();
             }
             try {
-                manageOrder = loadContract();
+              //  manageOrder = loadContract();
 
-                Log.i(TAG,"----111-----------------------------------------------" );
+                myGreeter = loadGreeter();
+
+                Log.i(TAG,"----0.55----------------------------------myGreeter.returngreet------------" +   myGreeter.returngreet() );
+                Log.i(TAG,"----111---------------------- -----------------" );
             } catch (Exception e) {
                 Log.i(TAG,"----catch (Exception e)-----------------------------------------------" );
                 e.printStackTrace();
@@ -116,7 +127,6 @@ public class RegisterActivity extends AppCompatActivity {
             TransactionReceipt result = null;
             try {
 
-                Log.i(TAG,"----1.55-----------------------------------------------" );
 //                result = contract.newBuyer(new Utf8String(username),new Utf8String(userphone)).get();
                 result = manageOrder.newBuyer(new Utf8String(username),new Utf8String(userphone)).get();
                 Log.i(TAG,"----222---------------------------------------------------------" );
@@ -166,6 +176,15 @@ public class RegisterActivity extends AppCompatActivity {
        // System.out.println("Binary-----------------------" + getBinaryOfContract(contractAddress));
         return contract;
     }
+
+
+    private greeter loadGreeter(){
+        greeter  thisGreeter = greeter
+                .load(Web3jConstants.CONTRACT_ADDRESS, LoginActivity.web3j, CREDENTIALS, Web3jConstants.GAS_PRICE, Web3jConstants.GAS_LIMIT_ETHER_TX.multiply(BigInteger.valueOf(2)));;
+
+        return thisGreeter;
+    }
+
 
     //chekc if the file exists
     public boolean fileExistance(String fname){

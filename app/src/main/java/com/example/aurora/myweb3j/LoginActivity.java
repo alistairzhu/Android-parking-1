@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity{
 
     //when uer clicking the "register" button
     public void onRegister(View view){
-
+        Log.i("MyApp","--+++-----------------start--------onRegister");
         final Intent intent_register = new Intent(getApplicationContext(), RegisterActivity.class);
         startActivity(intent_register);
         Log.i("MyApp","--+++-------------------------onRegister(View view)----------------------------------" + clientUrl );

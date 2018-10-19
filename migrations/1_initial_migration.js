@@ -1,5 +1,5 @@
-var ManageOrder = artifacts.require("./ManageOrder.sol");
+var greeter = artifacts.require("./greeter.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(ManageOrder);
+  deployer.deploy(greeter);
 };
