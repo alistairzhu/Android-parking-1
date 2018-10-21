@@ -1,3 +1,7 @@
+
+
+It is a copy , ONly for testing ---------
+
 # Micropayment Android Application Based on Blockchain Smart Contracts
 
 A pure decentralised application built on Ethereum blockchain. As the traditional structure of the servers exposed a large number of short comings in terms of computer capacity and security issues, there is a increasing demand for servers with higher integrity and availability. Due the nature of the blockchain where all running nodes work together to maintain and package the tranactions for the "server", the blockchain smart contract  technologies are better choices to realise a stronger server.
